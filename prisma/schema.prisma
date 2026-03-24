@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id             String                @id @default(cuid())
+  displayName    String?
+  sex            String?
+  age            Int?
+  heightCm       Float?
+  weightKg       Float?
+  bodyFatPercent Float?
+  activityLevel  String?
+  goal           String?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  threads ConversationThread[]
+}
+
+model ConversationThread {
+  id            String              @id @default(cuid())
+  userProfileId String?
+  title         String
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  archivedAt    DateTime?
+
+  userProfile UserProfile?        @relation(fields: [userProfileId], references: [id], onDelete: SetNull)
+  messages    ChatMessage[]
+  snapshots   NutritionSnapshot[]
+
+  @@index([userProfileId, updatedAt])
+}
+
+model ChatMessage {
+  id          String           @id @default(cuid())
+  threadId    String
+  role        String
+  kind        String           @default("text")
+  contentText String?
+  contentJson String?
+  turnIndex   Int
+  createdAt   DateTime         @default(now())
+
+  thread   ConversationThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  snapshot NutritionSnapshot?
+
+  @@index([threadId, turnIndex])
+  @@unique([threadId, turnIndex])
+}
+
+model NutritionSnapshot {
+  id               String    @id @default(cuid())
+  threadId         String
+  messageId        String    @unique
+  trainingType     String?
+  dayType          String?
+  targetCalories   Int?
+  targetProteinG   Int?
+  targetCarbsG     Int?
+  targetFatG       Int?
+  consumedCalories Int?      @default(0)
+  consumedProteinG Float?    @default(0)
+  consumedCarbsG   Float?    @default(0)
+  consumedFatG     Float?    @default(0)
+  remainingCalories Int?
+  remainingProteinG Float?
+  remainingCarbsG   Float?
+  remainingFatG     Float?
+  nextSuggestions  String?
+  createdAt        DateTime  @default(now())
+
+  thread  ConversationThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  message ChatMessage        @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([threadId, createdAt])
+}
