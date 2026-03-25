@@ -4,8 +4,14 @@ import { getMessageById } from '@/server/repositories/message-repository'
 
 const respond = (body: { error: string }, init?: ResponseInit) => NextResponse.json(body, init)
 
-export async function GET(_request: NextRequest, context: { params: { messageId?: string } }) {
-  const messageId = context.params.messageId?.trim()
+type AttachmentParams = { messageId: string }
+
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<AttachmentParams> | AttachmentParams },
+) {
+  const resolvedParams = await params
+  const messageId = resolvedParams.messageId?.trim()
   if (!messageId) {
     return respond({ error: 'messageId is required' }, { status: 400 })
   }
