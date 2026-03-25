@@ -293,11 +293,20 @@ export function ChatView() {
     }
   }
 
+  const resetStreamingState = () => {
+    if (tokenTimerRef.current) {
+      clearTimeout(tokenTimerRef.current)
+      tokenTimerRef.current = null
+    }
+    tokenQueueRef.current = []
+    setStreamingAssistant(null)
+  }
+
   const handleSend = async () => {
     if ((!input.trim() && !mealPhotoAttachment) || !activeThreadId) return
     setSending(true)
     setError(null)
-    setStreamingAssistant(null)
+    resetStreamingState()
 
     const payload: {
       threadId: string
@@ -327,7 +336,7 @@ export function ChatView() {
           setThreadDetail((prev) => (prev ? { ...prev, messages: [...prev.messages, event.message] } : prev))
           break
         case 'assistant_message':
-          setStreamingAssistant(null)
+          resetStreamingState()
           setThreadDetail((prev) => (prev ? { ...prev, messages: [...prev.messages, event.message] } : prev))
           break
         case 'snapshot':
