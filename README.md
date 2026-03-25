@@ -34,3 +34,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Azure OpenAI Configuration
+
+Copy `.env.example` to `.env.local` and fill in the secrets before running the app. Next.js loads `.env.local` automatically while keeping real values out of git:
+
+```bash
+cp .env.example .env.local
+```
+
+Then update the following keys:
+
+```
+AZURE_OPENAI_ENDPOINT="https://<your-resource>.openai.azure.com"
+AZURE_OPENAI_API_KEY="<api-key>"
+AZURE_OPENAI_DEPLOYMENT="<chat-deployment-name>"
+AZURE_OPENAI_API_VERSION="2024-02-15-preview" # optional, defaults to this value
+```
+
+Without these values the server keeps running but will skip the assistant call.
+
+

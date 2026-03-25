@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Next.js: full stack",
+            "configurations": [
+                "Next.js: server",
+                "Next.js: client"
+            ]
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Next.js: server",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "--inspect"
+            ],
+            "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
+            "args": [
+                "dev"
+            ],
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Next.js: client",
+            "type": "pwa-chrome",
+            "request": "launch",
+            "url": "http://localhost:3000"
+        }
+    ]
+}

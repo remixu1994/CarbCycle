@@ -36,3 +36,9 @@ export const getMessagesForThread = (threadId: string) => {
     orderBy: { turnIndex: 'asc' },
   })
 }
+
+export const getMessageById = (id: string) => {
+  return prisma.chatMessage.findUnique({
+    where: { id },
+  })
+}
