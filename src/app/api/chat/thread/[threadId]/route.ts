@@ -58,11 +58,11 @@ type ThreadWithRelations = NonNullable<Awaited<ReturnType<typeof getThreadById>>
 
 const serializeThread = (thread: ThreadWithRelations) => ({
   ...thread,
-  messages: thread.messages.map((message) => ({
+  messages: thread.messages.map((message: ThreadWithRelations['messages'][number]) => ({
     ...message,
     contentJson: message.contentJson ? JSON.parse(message.contentJson) : null,
   })),
-  snapshots: thread.snapshots.map((snapshot) => ({
+  snapshots: thread.snapshots.map((snapshot: ThreadWithRelations['snapshots'][number]) => ({
     ...snapshot,
     nextSuggestions: snapshot.nextSuggestions ? JSON.parse(snapshot.nextSuggestions) : null,
   })),

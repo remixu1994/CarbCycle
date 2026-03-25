@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
       contentJson: parsed.data.contentJson,
     })
 
-    let snapshot = null
+    let snapshot: ReturnType<typeof deserializeSnapshot> | null = null
     if (parsed.data.snapshot) {
       const createdSnapshot = await createSnapshot({
         threadId: parsed.data.threadId,
@@ -167,9 +167,9 @@ export async function POST(request: NextRequest) {
         ;(async () => {
           try {
             const history = await getMessagesForThread(parsed.data.threadId)
-            const azureMessages = history
+            const azureMessages: AzureChatMessage[] = history
               .map(toAzureChatMessage)
-              .filter((message): message is AzureChatMessage => Boolean(message))
+              .filter(isAzureChatMessage)
 
             if (azureMessages.length === 0) {
               queue({ type: 'error', error: 'No conversation context found.' })
@@ -349,4 +349,8 @@ const buildMealPhotoUrl = (messageId: string, fallbackDataUrl: string) => {
   }
   return fallbackDataUrl
 }
+
+const isAzureChatMessage = (
+  candidate: AzureChatMessage | null,
+): candidate is AzureChatMessage => Boolean(candidate)
 

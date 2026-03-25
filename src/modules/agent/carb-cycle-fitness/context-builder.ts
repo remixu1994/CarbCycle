@@ -52,7 +52,10 @@ export async function buildContext({ plannerResult, memoryStore, userId, history
 
   const messages: ModelMessage[] = [
     { role: 'system', content: CARB_CYCLE_SYSTEM_PROMPT },
-    ...blocks.map((block) => ({ role: 'system', content: `[${block.label}] ${block.content}` })),
+    ...blocks.map<ModelMessage>((block) => ({
+      role: 'system',
+      content: `[${block.label}] ${block.content}`,
+    })),
     ...history,
   ]
 

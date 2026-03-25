@@ -4,7 +4,7 @@ import Image from 'next/image'
 import type { Components } from 'react-markdown'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import type { ChangeEvent, Dispatch, DragEvent, KeyboardEvent, ReactNode, SetStateAction } from 'react'
+import type { ChangeEvent, ComponentProps, Dispatch, DragEvent, KeyboardEvent, ReactNode, SetStateAction } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { DailySummaryCard, type DailySummaryCardContent, type SummaryMetric } from '@/components/cards/daily-summary-card'
@@ -1073,6 +1073,11 @@ const formatRelative = (date: Date) => {
   return `${diffDays} d ago`
 }
 
+type ReactMarkdownCodeProps = ComponentProps<'code'> & {
+  inline?: boolean
+  node?: unknown
+}
+
 const markdownComponents: Components = {
   a: ({ node, ...props }) => (
     <a
@@ -1082,7 +1087,7 @@ const markdownComponents: Components = {
       className={`text-emerald-300 underline decoration-dotted underline-offset-4 hover:text-emerald-200 ${props.className ?? ''}`.trim()}
     />
   ),
-  code({ inline, className, children, ...props }) {
+  code({ inline, className, children, ...props }: ReactMarkdownCodeProps) {
     if (inline) {
       return (
         <code {...props} className={`markdown-inline-code ${className ?? ''}`.trim()}>
