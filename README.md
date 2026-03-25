@@ -55,3 +55,12 @@ AZURE_OPENAI_API_VERSION="2024-02-15-preview" # optional, defaults to this value
 Without these values the server keeps running but will skip the assistant call.
 
 
+
+## Docker
+
+```
+docker build -t carb-cycle .
+
+docker run --env-file .env.local -p 3000:3000 carb-cycle
+```
+
