@@ -64,3 +64,17 @@ docker build -t carb-cycle .
 docker run --env-file .env.local -p 3000:3000 carb-cycle
 ```
 
+For this project's SQLite database, mount the `prisma` directory so data persists outside the container:
+
+```bash
+docker run --env-file .env.local -p 3000:3000 -v ${PWD}/prisma:/app/prisma carb-cycle
+```
+
+Or use Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+`compose.yaml` can start without `.env.local`. If you want Azure OpenAI enabled, set the corresponding environment variables in your shell or create a local `.env.local` file first.
+

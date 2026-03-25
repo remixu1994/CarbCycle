@@ -1,11 +1,19 @@
-import { ChatMessage } from '@prisma/client'
-
 import { prisma } from '@/server/db/prisma'
+
+export type MessageRole = 'user' | 'assistant' | 'system'
+
+export type MessageKind =
+  | 'text'
+  | 'metric_card'
+  | 'day_plan_card'
+  | 'meal_analysis_card'
+  | 'daily_summary_card'
+  | 'event'
 
 export type CreateMessageInput = {
   threadId: string
-  role: ChatMessage['role']
-  kind?: ChatMessage['kind']
+  role: MessageRole
+  kind?: MessageKind
   contentText?: string
   contentJson?: Record<string, unknown>
 }

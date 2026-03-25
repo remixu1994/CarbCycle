@@ -1,12 +1,14 @@
-import { NutritionSnapshot } from '@prisma/client'
-
 import { prisma } from '@/server/db/prisma'
+
+export type TrainingType = 'lower' | 'upper' | 'rest'
+
+export type DayType = 'high' | 'medium' | 'low'
 
 export type CreateSnapshotInput = {
   threadId: string
   messageId: string
-  trainingType?: NutritionSnapshot['trainingType']
-  dayType?: NutritionSnapshot['dayType']
+  trainingType?: TrainingType
+  dayType?: DayType
   targetCalories?: number
   targetProteinG?: number
   targetCarbsG?: number

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "postinstall": "prisma generate",
     "db:push": "cross-env PRISMA_SCHEMA_ENGINE_LOG_LEVEL=debug RUST_LOG=debug PRISMA_CLI_USE_WASM=1 prisma db push"
   },
   "dependencies": {
